@@ -12,8 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.LocalRippleTheme
 import androidx.compose.material.ripple.RippleAlpha
-import androidx.compose.material.ripple.RippleTheme
+import androidx.compose.material3.LocalRippleConfiguration
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
@@ -31,50 +32,30 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zelgius.awning.app.R
 import com.zelgius.awning.Status
+import com.zelgius.awning.app.R
 import com.zelgius.awning.ui.theme.AwningTheme
 
-private object PrimaryForceStatusButtonRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor(): Color =
-        RippleTheme.defaultRippleColor(MaterialTheme.colorScheme.primary, !isSystemInDarkTheme())
 
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
-        MaterialTheme.colorScheme.primary,
-        lightTheme = !isSystemInDarkTheme()
-    ).let {
-        RippleAlpha(
-            draggedAlpha = it.draggedAlpha,
-            focusedAlpha = it.focusedAlpha,
-            hoveredAlpha = it.hoveredAlpha,
-            pressedAlpha = if (isSystemInDarkTheme()) 0.2f else 0.7f
-        )
-    }
-}
+private val primaryRippleConfiguration  @Composable get() = RippleConfiguration(
+    color = MaterialTheme.colorScheme.primary,
+    rippleAlpha =   RippleAlpha(
+        draggedAlpha = 0.10f,
+        focusedAlpha = 0.12f,
+        hoveredAlpha = 0.08f,
+        pressedAlpha = if (isSystemInDarkTheme()) 0.2f else 0.7f
+    )
+)
 
-private object SecondaryForceStatusButtonRippleTheme : RippleTheme {
-    @Composable
-    override fun defaultColor(): Color =
-        RippleTheme.defaultRippleColor(
-            MaterialTheme.colorScheme.secondary,
-            !isSystemInDarkTheme()
-        )
-
-    @Composable
-    override fun rippleAlpha(): RippleAlpha = RippleTheme.defaultRippleAlpha(
-        MaterialTheme.colorScheme.secondary,
-        lightTheme = !isSystemInDarkTheme()
-    ).let {
-        RippleAlpha(
-            draggedAlpha = it.draggedAlpha,
-            focusedAlpha = it.focusedAlpha,
-            hoveredAlpha = it.hoveredAlpha,
-            pressedAlpha = if (isSystemInDarkTheme()) 0.2f else 0.7f
-        )
-    }
-}
+private val secondaryRippleConfiguration  @Composable get() = RippleConfiguration(
+    color = MaterialTheme.colorScheme.secondary,
+    rippleAlpha =   RippleAlpha(
+        draggedAlpha = 0.10f,
+        focusedAlpha = 0.12f,
+        hoveredAlpha = 0.08f,
+        pressedAlpha = if (isSystemInDarkTheme()) 0.2f else 0.7f
+    )
+)
 
 @Composable
 fun ForceStatusButton(
@@ -109,7 +90,7 @@ fun ForceStatusButton(
     )
 
     Row(modifier) {
-        CompositionLocalProvider(LocalRippleTheme provides PrimaryForceStatusButtonRippleTheme) {
+        CompositionLocalProvider(LocalRippleConfiguration provides primaryRippleConfiguration) {
             RoundedCornerText(
                 text = stringResource(id = R.string.opened),
                 backgroundColor = firstItemColor,
@@ -150,8 +131,8 @@ fun ForceStatusButton(
             color = MaterialTheme.colorScheme.onSurface
         )
 
-        CompositionLocalProvider(LocalRippleTheme provides SecondaryForceStatusButtonRippleTheme) {
-            RoundedCornerText(
+        CompositionLocalProvider(LocalRippleConfiguration provides secondaryRippleConfiguration) {
+        RoundedCornerText(
                 text = stringResource(id = R.string.closed),
                 backgroundColor = thirdItemColor,
                 textColor = thirdItemTextColor,

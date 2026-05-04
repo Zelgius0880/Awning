@@ -3,15 +3,15 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
     alias(libs.plugins.com.google.dagger.hilt.android)
-    kotlin("kapt")
+    id ("com.google.devtools.ksp")
+
 }
 
 android {
     namespace = "com.zelgius.awning"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 30
@@ -38,13 +38,9 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         buildConfig = true
     }
@@ -60,7 +56,7 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
 
 }

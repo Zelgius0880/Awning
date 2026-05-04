@@ -1,20 +1,19 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
     alias(libs.plugins.com.android.application)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
     alias(libs.plugins.com.google.dagger.hilt.android)
-    kotlin("kapt")
+    id ("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.zelgius.awning.app"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.zelgius.awning"
         minSdk = 30
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -41,18 +40,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.7"
     }
     packaging {
         resources {
@@ -80,7 +74,8 @@ dependencies {
 
     implementation(libs.hilt.android.navigation)
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.material.icons.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
